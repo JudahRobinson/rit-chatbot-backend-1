@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatBot - RIT FAQ Assistant</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        .avatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          margin-right: 10px;
+       }
+
+       .message-wrapper {
+         display: flex;
+         align-items: center;
+         margin-bottom: 10px;
+       }
+
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #e8ecf4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      header {
+        background: linear-gradient(to right, #003366, #0055a5);
+        color: white;
+        width: 100%;
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        color: #d0e1f9;
+        margin-top: 5px;
+        font-weight: normal;
+      }
+
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: white;
+        margin-top: 2rem;
+        width: 90%;
+        max-width: 500px;
+        height: 600px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        background: #f9fbfd;
+      }
+
+      .message {
+        margin: 0.5rem 0;
+        padding: 0.8rem 1rem;
+        border-radius: 20px;
+        max-width: 75%;
+        line-height: 1.4;
+        word-wrap: break-word;
+      }
+
+      .user {
+        align-self: flex-end;
+        background: #004080;
+        color: white;
+        border-bottom-right-radius: 0;
+      }
+
+      .bot {
+        align-self: flex-start;
+        background: #e0e6ef;
+        color: #333;
+        border-bottom-left-radius: 0;
+      }
+
+      .quick-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #f1f4f9;
+        border-top: 1px solid #ddd;
+      }
+
+      .quick-buttons button {
+        flex: 1 1 45%;
+        padding: 0.6rem;
+        background-color: #004080;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: 0.2s ease;
+      }
+
+      .quick-buttons button:hover {
+        background-color: #003060;
+      }
+
+      .input-area {
+        display: flex;
+        padding: 0.8rem 1rem;
+        border-top: 1px solid #ccc;
+        background: #fff;
+      }
+
+      input[type="text"] {
+        flex: 1;
+        padding: 0.6rem 0.9rem;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        outline: none;
+        font-size: 1rem;
+      }
+      
+
+      button.send-btn {
+        margin-left: 0.5rem;
+        background: #004080;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      button.send-btn:hover {
+        background-color: #002d5a;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      ChatBot - RIT FAQ Assistant
+      <div class="subtitle">Rajalakshmi Institute of Technology</div>
+    </header>
+
+    <div class="chat-container">
+      <div class="messages" id="messages">
+        <div class="message bot">
+          Hi! I'm ChatBot. Ask me anything about Rajalakshmi Institute of
+          Technology (RIT).
+        </div>
+      </div>
+
+      <div class="quick-buttons">
+        <button onclick="askQuickQuestion('Tell me about admission')">
+          Admission
+        </button>
+        <button onclick="askQuickQuestion('Do you have hostels?')">
+          Hostel
+        </button>
+        <button onclick="askQuickQuestion('What is the fee structure?')">
+          Fees
+        </button>
+        <button onclick="askQuickQuestion('Is there a canteen?')">
+          Canteen
+        </button>
+        <button onclick="askQuickQuestion('When is the library open?')">
+          Library
+        </button>
+        <button onclick="askQuickQuestion('What about bus facilities?')">
+          Bus Details
+        </button>
+        <button
+          onclick="askQuickQuestion('Where can I get academic materials?')"
+        >
+          Academic Materials
+        </button>
+      </div>
+
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your question..." />
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      async function sendMessage() {
+        const input = document.getElementById("userInput");
+        const messages = document.getElementById("messages");
+        const userText = input.value.trim();
+        if (!userText) return;
+
+        addUserMessage(userText);
+        const botReply = await getBotResponse(userText);
+        await addBotMessage(userText); // display message already handled
+
+        // Save chat to Firebase
+        const chatRef = db.ref("chat-history").push();
+        chatRef.set({
+          user: userText,
+          bot: botReply,
+          timestamp: new Date().toISOString()
+        });
+
+        input.value = "";
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      
+
+      async function askQuickQuestion(question) {
+        addUserMessage(question);
+        await addBotMessage(question); // <== important change
+        document.getElementById("messages").scrollTop =
+           document.getElementById("messages").scrollHeight;
+      }
+
+      function addUserMessage(text) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "message-wrapper user";
+
+        const avatar = document.createElement("img");
+        avatar.src = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; // user icon
+        avatar.className = "avatar";
+
+        const msg = document.createElement("div");
+        msg.className = "message user";
+        msg.innerText = text;
+
+        wrapper.appendChild(msg);
+        wrapper.appendChild(avatar);
+
+        document.getElementById("messages").appendChild(wrapper);
+      }
+
+    
+
+      async function addBotMessage(text) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "message-wrapper bot";
+
+        const avatar = document.createElement("img");
+        avatar.src = "https://cdn-icons-png.flaticon.com/512/4712/4712109.png"; // bot icon
+        avatar.className = "avatar";
+
+        const msg = document.createElement("div");
+        msg.className = "message bot";
+        msg.innerText = "Thinking...";
+
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(msg);
+
+        document.getElementById("messages").appendChild(wrapper);
+ 
+        const reply = await getBotResponse(text);
+        msg.innerText = reply;
+      }
+
+      
+
+      async function getBotResponse(input) {
+        try {
+          const response = await fetch("https://rit-chatbot-backend.onrender.com", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: input }),
+          });
+
+          const data = await response.json();
+          return data.reply;
+        } catch (error) {
+          console.error("Error:", error);
+          return "Oops! Something went wrong while connecting to the server.";
+        }
+      }
+      
+
+      // function getBotResponse(input) {
+      //   const question = input.toLowerCase();
+
+      //   if (question.includes("admission")) return "Admissions at RIT usually open around June. Check the official website for notifications.";
+      //   if (question.includes("hostel")) return "Yes, RIT has well-maintained hostels for both boys and girls.";
+      //   if (question.includes("fees")) return "Fee details are provided on the RIT website. It varies based on your course and quota.";
+      //   if (question.includes("canteen")) return "The RIT canteen serves a variety of hygienic food at affordable prices.";
+      //   if (question.includes("library")) return "RIT's library is open from 8 AM to 8 PM on all working days.";
+      //   if (question.includes("bus")) return "RIT provides safe and convenient bus transportation for students and staff across Chennai and nearby areas.";
+      //   if (question.includes("academic")) return "Academic materials are available in the library and can also be accessed through the RIT LMS portal.";
+
+      //   return "Sorry, I don't have the answer to that. Please try asking something else about RIT!";
+      // }
+    </script>
+    <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDkn_2TbPvNY9vRD1ooozPYBeSNRViDcm8",
+  authDomain: "rit-chatbot-c6def.firebaseapp.com",
+  databaseURL: "https://rit-chatbot-c6def-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "rit-chatbot-c6def",
+  storageBucket: "rit-chatbot-c6def.firebasestorage.app",
+  messagingSenderId: "146673619955",
+  appId: "1:146673619955:web:2ebe675c97e6b6b6d03886"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+  </body>
+</html>
