@@ -7,19 +7,19 @@
     <style>
       * {
         box-sizing: border-box;
-        .avatar {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          margin-right: 10px;
-       }
+      }
 
-       .message-wrapper {
-         display: flex;
-         align-items: center;
-         margin-bottom: 10px;
-       }
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
 
+      .message-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
       }
 
       body {
@@ -57,9 +57,9 @@
         justify-content: space-between;
         background: white;
         margin-top: 2rem;
-        width: 90%;
+        width: 95%;
         max-width: 500px;
-        height: 600px;
+        height: 90vh; /* ✅ more flexible height for mobile */
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         overflow: hidden;
@@ -70,6 +70,7 @@
         overflow-y: auto;
         padding: 1rem;
         background: #f9fbfd;
+        max-height: 65vh; /* for mobile scrolling */
       }
 
       .message {
@@ -98,6 +99,7 @@
       .quick-buttons {
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between; /* spread nicely */
         gap: 0.5rem;
         padding: 0.5rem 1rem;
         background: #f1f4f9;
@@ -135,7 +137,6 @@
         outline: none;
         font-size: 1rem;
       }
-      
 
       button.send-btn {
         margin-left: 0.5rem;
@@ -197,6 +198,7 @@
       <div class="input-area">
         <input type="text" id="userInput" placeholder="Type your question..." />
         <button class="send-btn" onclick="sendMessage()">Send</button>
+        <button id="micButton" class="send-btn">🎤</button>
       </div>
     </div>
 
@@ -216,20 +218,18 @@
         chatRef.set({
           user: userText,
           bot: botReply,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
 
         input.value = "";
         messages.scrollTop = messages.scrollHeight;
       }
 
-      
-
       async function askQuickQuestion(question) {
         addUserMessage(question);
         await addBotMessage(question); // <== important change
         document.getElementById("messages").scrollTop =
-           document.getElementById("messages").scrollHeight;
+          document.getElementById("messages").scrollHeight;
       }
 
       function addUserMessage(text) {
@@ -250,8 +250,6 @@
         document.getElementById("messages").appendChild(wrapper);
       }
 
-    
-
       async function addBotMessage(text) {
         const wrapper = document.createElement("div");
         wrapper.className = "message-wrapper bot";
@@ -262,28 +260,55 @@
 
         const msg = document.createElement("div");
         msg.className = "message bot";
-        msg.innerText = "Thinking...";
+        msg.innerText = "Still thinking... Render might be waking up 😅";
 
         wrapper.appendChild(avatar);
         wrapper.appendChild(msg);
 
         document.getElementById("messages").appendChild(wrapper);
- 
+
         const reply = await getBotResponse(text);
         msg.innerText = reply;
       }
 
-      
+      const recognition = new (window.SpeechRecognition ||
+        window.webkitSpeechRecognition)();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "en-US";
+
+      recognition.onresult = function (event) {
+        const userText = event.results[0][0].transcript;
+        document.getElementById("userInput").value = userText;
+        sendMessage();
+        // addUserMessage(userText);
+        // getBotResponse(userText).then((botReply) => {
+        //   addBotMessage(botReply);
+        // });
+        // document.getElementById("userInput").value = "";
+      };
+
+      recognition.onerror = function (event) {
+        console.error("Speech recognition error:", event.error);
+      };
+
+      document.getElementById("micButton").addEventListener("click", () => {
+        recognition.start();
+      });
 
       async function getBotResponse(input) {
         try {
-          const response = await fetch("https://rit-chatbot-backend.onrender.com", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message: input }),
-          });
+          const response = await fetch(
+            "https://stunning-fudge-f40a1f.netlify.app/",
+            //http://localhost:3000/chat",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ message: input }),
+            }
+          );
 
           const data = await response.json();
           return data.reply;
@@ -292,7 +317,6 @@
           return "Oops! Something went wrong while connecting to the server.";
         }
       }
-      
 
       // function getBotResponse(input) {
       //   const question = input.toLowerCase();
@@ -309,9 +333,9 @@
       // }
     </script>
     <!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
+    <!-- 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -329,7 +353,23 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig); -->
 
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDkn_2TbPvNY9vRD1ooozPYBeSNRViDcm8",
+        authDomain: "rit-chatbot-c6def.firebaseapp.com",
+        databaseURL:
+          "https://rit-chatbot-c6def-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "rit-chatbot-c6def",
+        storageBucket: "rit-chatbot-c6def.appspot.com",
+        messagingSenderId: "146673619955",
+        appId: "1:146673619955:web:2ebe675c97e6b6b6d03886",
+      };
+
+      // Initialize Firebase (for version 9 compat)
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
+    </script>
   </body>
 </html>
