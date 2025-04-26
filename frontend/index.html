@@ -295,13 +295,14 @@
       document.getElementById("micButton").addEventListener("click", () => {
         recognition.start();
       });
-
+      const backendUrl =
+        location.hostname === "localhost"
+          ? "http://localhost:3000/chat"
+          : "https://rit-chatbot-backend-1.onrender.com/chat";
       async function getBotResponse(input) {
         try {
-          const response = await fetch(
-            "https://stunning-fudge-f40a1f.netlify.app/",
-            //http://localhost:3000/chat",
-            {
+          const response = await fetch(backendUrl, {
+            
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
