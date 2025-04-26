@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 console.log("Starting server...");
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // correctly use .env
+  apiKey: process.env.OPENAI_API_KEY // correctly use .env
 });
 
 app.use(cors());
