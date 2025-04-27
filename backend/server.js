@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const { OpenAI } = require("openai");
+// const { OpenAI } = require("openai");
+const axios = require("axios");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,10 +10,11 @@ const PORT = process.env.PORT || 3000;
 console.log("Starting the server...");
 
 // Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // API Key from environment variable
-});
-
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY, // API Key from environment variable
+// });
+const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
+console.log("HUGGINGFACE_API_KEY:",HUGGINGFACE_API_KEY);
 app.use(cors());
 app.use(express.json());
 
@@ -32,24 +34,21 @@ app.post("/chat", async (req, res) => {
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: userMessage }],
-    });
-
-    console.log("✅ OpenAI raw response:", completion);
-    const botReply = completion.choices[0].message.content;
-    console.log("🤖 Replying with:", botReply);
-
+    const response = await axios.post(
+      "https://api-inference.huggingface.co/models/gpt2", // You can change to any model you like
+      { inputs: userMessage },
+      {
+        headers: {
+          Authorization: `Bearer ${HUGGINGFACE_API_KEY}`,
+        },
+      }
+    );
+    const botReply = response.data[0]?.generated_text || "Sorry, something went wrong.";
     res.json({ reply: botReply });
 
   } catch (error) {
-    console.error("❌ OpenAI Error:", error);
-    console.error("Error message:", error.message);
-
-    res.status(500).json({
-      reply: "Sorry, something went wrong while generating the reply.",
-    });
+    console.error("❌ Hugging Face Error:", error);
+    res.status(500).json({ reply: "Sorry, something went wrong while generating the reply." });
   }
 });
 
