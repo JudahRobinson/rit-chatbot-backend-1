@@ -258,8 +258,51 @@
 
       async function askQuickQuestion(question) {
         addUserMessage(question);
+        const q = question.toLowerCase();
 
-        if (question.toLowerCase().includes("canteen")) {
+        if (q.includes("admission")) {
+          await addBotMessage(
+            `📌 Admissions at RIT usually start around June. Check the official website for notifications.`
+          );
+          return;
+        }
+
+        if (q.includes("hostels")) {
+          await addBotMessage(
+            `🏨 Yes, RIT has separate hostels for boys and girls with good facilities.`
+          );
+          return;
+        }
+
+        if (q.includes("fee") || q.includes("fees")) {
+          await addBotMessage(
+            `💰 Fee structure depends on course and quota. Please check with RIT administration.`
+          );
+          return;
+        }
+
+        if (q.includes("library")) {
+          await addBotMessage(
+            `📚 The library is open from 8 AM to 8 PM on all working days.`
+          );
+          return;
+        }
+
+        if (q.includes("bus")) {
+          await addBotMessage(
+            `🚌 Yes, RIT offers bus facilities to most areas in and around Chennai.`
+          );
+          return;
+        }
+
+        if (q.includes("academic")) {
+          await addBotMessage(
+            `📖 Academic materials are available in the library and LMS portal.`
+          );
+          return;
+        }
+
+        if (q.includes("canteen")) {
           await addBotMessage(`
       🍽️ RIT Canteen Menu (Short View):
 
@@ -326,7 +369,10 @@
         document.getElementById("messages").appendChild(wrapper);
 
         const reply = await getBotResponse(text);
-        msg.innerText = reply;
+        msg.innerHTML = reply.replace(
+          /(https?:\/\/[^\s]+)/g,
+          "<a href='$1' target='_blank'>$1</a>"
+        );
       }
 
       const recognition = new (window.SpeechRecognition ||
