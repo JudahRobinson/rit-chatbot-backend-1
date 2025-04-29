@@ -35,7 +35,7 @@ app.post("/chat", async (req, res) => {
 
   try {
     const response = await axios.post(
-      "https://api-inference.huggingface.co/models/gpt2", // You can change to any model you like
+      "https://api-inference.huggingface.co/models/gpt2", // You can change to any model you like .. "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium",
       { inputs: userMessage },
       {
         headers: {
@@ -43,8 +43,14 @@ app.post("/chat", async (req, res) => {
         },
       }
     );
+    console.log("🛜 Hugging Face response:", response.data);
     const botReply = response.data[0]?.generated_text || "Sorry, something went wrong.";
     res.json({ reply: botReply });
+  //   const botReply = Array.isArray(response.data)
+  //   ? response.data[0]?.generated_text
+  //   : response.data?.generated_text;
+
+  // res.json({ reply: botReply || "Sorry, no response from model." });
 
   } catch (error) {
     console.error("❌ Hugging Face Error:", error);
