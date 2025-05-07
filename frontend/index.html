@@ -258,6 +258,7 @@
 
         async function sendMessage() {
           const input = document.getElementById("userInput");
+          console.log("input",input)
           const text = input.value.trim();
           if (!text) return;
 
@@ -310,11 +311,13 @@
 
         async function getBotReply(input) {
           try {
-            const res = await fetch("https://rit-chatbot-backend-1.onrender.com/chat", {
+            const fetchDetails = {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ message: input }),
-            });
+            }
+            console.log("fetchDetails",fetchDetails)
+            const res = await fetch("https://rit-chatbot-backend-1.onrender.com/chat", fetchDetails);
             const data = await res.json();
             return data.reply;
           } catch (err) {

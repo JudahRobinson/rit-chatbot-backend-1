@@ -11,9 +11,6 @@ const PORT = process.env.PORT || 3000;
 
 console.log("Starting the server...");
 
-const HF_KEY = process.env.HUGGINGFACE_API_KEY;
-console.log("HUGGINGFACE_API_KEY:.....", HF_KEY);
-
 app.use(cors());
 app.use(express.json());
 
@@ -104,30 +101,6 @@ app.post("/chat", async (req, res) => {
     }
 
     console.error("❌ Local Python failed:", err || stderr);
-
-    // 2c. (Optional) Fallback to Hugging Face Inference API
-    if (HF_KEY) {
-      return axios
-        .post(
-          "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium",
-          { inputs: userMessage },
-          { headers: { Authorization: `Bearer ${HF_KEY}` } }
-        )
-        .then((hf) => {
-          const reply =
-            hf.data?.generated_text ||
-            hf.data?.[0]?.generated_text ||
-            "🤖 No reply from cloud model.";
-          res.json({ reply });
-        })
-        .catch((e) => {
-          console.error("🔥 HF fallback failed:", e.message);
-          res.json({
-            reply:
-              "⚠️ Sorry, I'm having trouble right now. Please try again later.",
-          });
-        });
-    }
 
     // 2d. If all else fails:
     res.json({
