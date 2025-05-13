@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+  <meta charset="UTF-8" />
+  <title>Chatbot Webpage</title>
+  <style>
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .main {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.5) 50%),
+                        url('https://www.appmysite.com/blog/wp-content/uploads/2023/02/ChatGPT.png');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            width: 1200px;
+            height: 75px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .icon {
+            width: 200px;
+            height: 70px;
+        }
+
+        .logo {
+            color: #ff7200;
+            font-size: 35px;
+            padding-left: 20px;
+            padding-top: 10px;
+        }
+
+        .menu {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .menu ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu ul li {
+            margin: 0 20px;
+            font-size: 14px;
+        }
+
+        .menu ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.4s ease-in-out;
+        }
+
+        .menu ul li a:hover {
+            color: #ff7200;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+        }
+
+        .srch {
+            width: 200px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid #ff7200;
+            border-right: none;
+            color: #fff;
+            font-size: 16px;
+            padding: 0 10px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .btn {
+            height: 40px;
+            padding: 0 20px;
+            background: #ff7200;
+            border: 2px solid #ff7200;
+            color: #fff;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #ff7200;
+        }
+
+        .content {
+            width: 1200px;
+            margin: auto;
+            color: #fff;
+            position: relative;
+            top: 100px;
+        }
+
+        .content h1 {
+            font-family: "Times New Roman", serif;
+            font-size: 50px;
+            letter-spacing: 2px;
+        }
+
+        .content span {
+            color: #ff7200;
+            font-size: 65px;
+        }
+
+        .content .par {
+            margin-top: 20px;
+            padding-left: 20px;
+            line-height: 30px;
+            letter-spacing: 1.2px;
+        }
+
+        .content .cn {
+            width: 160px;
+            height: 40px;
+            background: #ff7200;
+            border: none;
+            margin: 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.4s ease;
+        }
+
+        .content .cn a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .content .cn:hover {
+            background-color: #fff;
+        }
+
+        .form {
+            width: 250px;
+            height: 420px;
+            background: rgba(0, 0, 0, 0.8);
+            position: absolute;
+            top: 20px;
+            right: 0;
+            margin-right: 60px;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .form h2 {
+            text-align: center;
+            color: #ff7200;
+            font-size: 22px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 8px;
+        }
+
+        .form input {
+            width: 100%;
+            height: 35px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #ff7200;
+            color: #fff;
+            font-size: 15px;
+            margin-top: 30px;
+        }
+
+        .form input:focus {
+            outline: none;
+        }
+
+        ::placeholder {
+            color: #fff;
+        }
+
+        .btnn {
+            width: 100%;
+            height: 40px;
+            background: #ff7200;
+            border: none;
+            margin-top: 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            transition: 0.4s ease;
+        }
+
+        .btnn:hover {
+            background: #fff;
+            color: #ff7200;
+        }
+
+        .btnn a {
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .form .link {
+            font-size: 17px;
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .form .link a {
+            color: #ff7200;
+            text-decoration: none;
+        }
+
+        .liw {
+            text-align: center;
+            padding: 15px 0 10px;
+        }
+
+        .icons {
+            text-align: center;
+        }
+
+        .icons a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .icons a:hover {
+            color: #ff7200;
+        }
+
+        .icons ion-icon {
+            font-size: 30px;
+            transition: 0.3s ease;
+        }
+        .error {
+            font-size: 14px;
+            display: none;
+            text-align: center;
+            color: red;
+        }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <div class="navbar">
+      <div class="icon">
+        <h2 class="logo">The Hacktives</h2>
+      </div>
+      <div class="menu">
+        <ul>
+          <li><a href="file:///E:/canteen/firstpage/Home%20page.html">HOME</a></li>
+          <li><a href="https://ritchennai.org/index.php">ABOUT</a></li>
+          <li><a href="https://ritchennai.org/contact-us.php">CONTACT</a></li>
+        </ul>
+      </div>
+      <div class="search">
+        <input class="srch" type="search" placeholder="Type to text" />
+        <button class="btn">Search</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <h1>ChatBot-<br /><span>RIT FAQ Assistant</span> <br />for students</h1>
+      <p class="par">
+        AI-powered college assistant chatbot for queries on academics, facilities, events, and campus.
+      </p>
+      <button class="cn"><a href="https://apply.ritchennai.org/">JOIN US</a></button>
+
+      <div class="form">
+        <h2>Login Here</h2>
+        <form id="loginForm">
+          <p class="error" id="error-message">Invalid Email ID or password</p>
+          <input type="email" id="email" placeholder="Enter Email Here" required />
+          <input type="password" id="password" placeholder="Enter Password Here" required />
+          <button type="submit" class="btnn">Login</button>
+
+          <p class="link">Don't have an account?<br /><a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmyaccount.google.com%3Futm_source%3Daccount-marketing-page%26utm_medium%3Dgo-to-account-button%26gar%3DWzEzMywiMjM2NzM2Il0%26sl%3Dtrue&dsh=S-1607713059%3A1746933091726358&flowEntry=ServiceLogin&flowName=GlifWebSignIn&ifkv=ASKV5MjaWjO225xeaYoXjRIWjEBIsne40JsddATrQTWRKwsY9ksk5kKLOfVrZJ9So0FlXk-MPsOhqg&service=accountsettings">Sign up here</a></p>
+          <p class="liw">See us in</p>
+
+          <div class="icons">
+            <a href="https://www.facebook.com/share/1AmgnC7jnt/"><ion-icon name="logo-facebook"></ion-icon></a>
+            <a href="https://www.instagram.com/ritchennai?igsh=dTZ6NHA0cTQ5Ymxw"><ion-icon name="logo-instagram"></ion-icon></a>
+            <a href="https://www.linkedin.com/school/rit-chennai/"><ion-icon name="logo-linkedin"></ion-icon></a>
+            <a href="https://x.com/rit_chennai?t=Gn-kgGBl4oeXMxPyxJvqPA&s=09"><ion-icon name="logo-twitter"></ion-icon></a>
+        
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Section -->
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      let enteredEmail = document.getElementById("email").value;
+      let enteredPassword = document.getElementById("password").value;
+
+      const correctEmail = "Kalai48866@gmail.com";
+      const correctPassword = "51470427";
+
+      if (enteredEmail === correctEmail && enteredPassword === correctPassword) {
+        window.location.href = "botfly.html";
+      } else {
+        document.getElementById("error-message").style.display = "block";
+      }
+    });
+  </script>
+
+  <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+</body>
+</html>
+
+
+  <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+</body>
+</html>
+

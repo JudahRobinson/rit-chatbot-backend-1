@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bot Fly Start Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://payspaceworld.com/wp-content/uploads/2018/10/chatbot1.jpg') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      text-align: center;
+      color: white;
+      max-width: 800px;
+      padding: 20px;
+      z-index: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      margin-bottom: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 40px;
+    }
+
+    .start-btn {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #ff7200;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.4s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 0 12px rgba(255, 114, 0, 0.6);
+      position: relative;
+    }
+
+    .start-btn:hover {
+      background-color: #fff;
+      color: #ff7200;
+      border: 2px solid #ff7200;
+      box-shadow: 0 0 18px 4px rgba(255, 114, 0, 0.7);
+    }
+
+    .start-btn span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .start-btn img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .bot {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      opacity: 0;
+      transition: transform 1.5s ease-in, bottom 1.5s ease-in, opacity 1s ease;
+      z-index: 2;
+    }
+
+    .bot img {
+      width: 100px;
+      height: auto;
+    }
+
+    .bot::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 40px;
+      background: radial-gradient(circle, #ff0 0%, #f90 40%, #f00 100%);
+      opacity: 0;
+      border-radius: 50%;
+      animation: flame-flicker 0.2s infinite alternate;
+      z-index: -1;
+    }
+
+    .bot.fly {
+      bottom: 110%;
+      transform: translate(-50%, -100%) scale(1.5) rotate(-15deg);
+      opacity: 1;
+    }
+
+    .bot.fly::after {
+      opacity: 1;
+    }
+
+    @keyframes flame-flicker {
+      0% {
+        transform: translateX(-50%) scaleY(1);
+        opacity: 0.7;
+        height: 30px;
+      }
+      100% {
+        transform: translateX(-50%) scaleY(1.4);
+        opacity: 1;
+        height: 45px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bot rocket animation -->
+  <div class="bot" id="bot">
+    <img src="chatbot.png" alt="Chatbot Rocket">
+  </div>
+
+  <!-- Main container -->
+  <div class="container" id="main-container">
+    <img src="logo.png" alt="RIT Logo" class="logo">
+    <h1>Welcome to RIT FAQ Assistant</h1>
+    <p>Your AI-powered college chatbot assistant</p>
+    <button class="start-btn" onclick="startChatbot()">
+      <span>
+        <img src="chatbot.png" alt="Bot Icon">
+        Start Chatbot
+      </span>
+    </button>
+  </div>
+
+  <script>
+    function startChatbot() {
+      const bot = document.getElementById('bot');
+      const container = document.getElementById('main-container');
+
+      container.style.opacity = '0.3';         // Fade out the text
+      bot.style.opacity = '1';                 // Make the bot visible
+
+      setTimeout(() => {
+        bot.classList.add('fly');              // Trigger flying animation
+      }, 300);
+
+      setTimeout(() => {
+        window.location.href = "chatbot.html"; // Redirect after animation
+      }, 2200);
+    }
+  </script>
+</body>
+</html>
