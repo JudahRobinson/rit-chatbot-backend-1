@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    
-  <meta charset="UTF-8" />
-  <title>Chatbot Webpage</title>
-  <style>
-    * {
+
+    <meta charset="UTF-8" />
+    <title>Chatbot Webpage</title>
+    <style>
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -19,7 +20,7 @@
             width: 100%;
             height: 100vh;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.5) 50%),
-                        url('https://www.appmysite.com/blog/wp-content/uploads/2023/02/ChatGPT.png');
+                url('https://www.appmysite.com/blog/wp-content/uploads/2023/02/ChatGPT.png');
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -253,88 +254,104 @@
             font-size: 30px;
             transition: 0.3s ease;
         }
+
         .error {
             font-size: 14px;
             display: none;
             text-align: center;
             color: red;
         }
-  </style>
+    </style>
 </head>
+
 <body>
-  <div class="main">
-    <div class="navbar">
-      <div class="icon">
-        <h2 class="logo">The Hacktives</h2>
-      </div>
-      <div class="menu">
-        <ul>
-          <li><a href="file:///E:/canteen/firstpage/Home%20page.html">HOME</a></li>
-          <li><a href="https://ritchennai.org/index.php">ABOUT</a></li>
-          <li><a href="https://ritchennai.org/contact-us.php">CONTACT</a></li>
-        </ul>
-      </div>
-      <div class="search">
-        <input class="srch" type="search" placeholder="Type to text" />
-        <button class="btn">Search</button>
-      </div>
+    <div class="main">
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">The Hacktives</h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="file:///E:/canteen/firstpage/Home%20page.html">HOME</a></li>
+                    <li><a href="https://ritchennai.org/index.php">ABOUT</a></li>
+                    <li><a href="https://ritchennai.org/contact-us.php">CONTACT</a></li>
+                </ul>
+            </div>
+            <div class="search">
+                <input class="srch" type="search" placeholder="Type to text" />
+                <button class="btn">Search</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1>ChatBot-<br /><span>RIT FAQ Assistant</span> <br />for students</h1>
+            <p class="par">
+                AI-powered college assistant chatbot for queries on academics, facilities, events, and campus.
+            </p>
+            <button class="cn"><a href="https://apply.ritchennai.org/">JOIN US</a></button>
+
+            <div class="form">
+                <h2>Login Here</h2>
+                <form id="loginForm">
+                    <p class="error" id="error-message">Invalid Email ID or password</p>
+                    <input type="email" id="email" placeholder="Enter Email Here" required />
+                    <input type="password" id="password" placeholder="Enter Password Here" required />
+                    <button type="submit" class="btnn">Login</button>
+
+                    <p class="link">Don't have an account?<br /><a
+                            href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmyaccount.google.com%3Futm_source%3Daccount-marketing-page%26utm_medium%3Dgo-to-account-button%26gar%3DWzEzMywiMjM2NzM2Il0%26sl%3Dtrue&dsh=S-1607713059%3A1746933091726358&flowEntry=ServiceLogin&flowName=GlifWebSignIn&ifkv=ASKV5MjaWjO225xeaYoXjRIWjEBIsne40JsddATrQTWRKwsY9ksk5kKLOfVrZJ9So0FlXk-MPsOhqg&service=accountsettings">Sign
+                            up here</a></p>
+                    <p class="liw">See us in</p>
+
+                    <div class="icons">
+                        <a href="https://www.facebook.com/share/1AmgnC7jnt/"><ion-icon
+                                name="logo-facebook"></ion-icon></a>
+                        <a href="https://www.instagram.com/ritchennai?igsh=dTZ6NHA0cTQ5Ymxw"><ion-icon
+                                name="logo-instagram"></ion-icon></a>
+                        <a href="https://www.linkedin.com/school/rit-chennai/"><ion-icon
+                                name="logo-linkedin"></ion-icon></a>
+                        <a href="https://x.com/rit_chennai?t=Gn-kgGBl4oeXMxPyxJvqPA&s=09"><ion-icon
+                                name="logo-twitter"></ion-icon></a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div class="content">
-      <h1>ChatBot-<br /><span>RIT FAQ Assistant</span> <br />for students</h1>
-      <p class="par">
-        AI-powered college assistant chatbot for queries on academics, facilities, events, and campus.
-      </p>
-      <button class="cn"><a href="https://apply.ritchennai.org/">JOIN US</a></button>
+    <!-- JavaScript Section -->
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
 
-      <div class="form">
-        <h2>Login Here</h2>
-        <form id="loginForm">
-          <p class="error" id="error-message">Invalid Email ID or password</p>
-          <input type="email" id="email" placeholder="Enter Email Here" required />
-          <input type="password" id="password" placeholder="Enter Password Here" required />
-          <button type="submit" class="btnn">Login</button>
+            const validLogins = [
+                { email: "Kalai48866@gmail.com", password: "51470427" },
+                { email: "judah005@gmail.com", password: "6381721" }
+            ];
 
-          <p class="link">Don't have an account?<br /><a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmyaccount.google.com%3Futm_source%3Daccount-marketing-page%26utm_medium%3Dgo-to-account-button%26gar%3DWzEzMywiMjM2NzM2Il0%26sl%3Dtrue&dsh=S-1607713059%3A1746933091726358&flowEntry=ServiceLogin&flowName=GlifWebSignIn&ifkv=ASKV5MjaWjO225xeaYoXjRIWjEBIsne40JsddATrQTWRKwsY9ksk5kKLOfVrZJ9So0FlXk-MPsOhqg&service=accountsettings">Sign up here</a></p>
-          <p class="liw">See us in</p>
+            let enteredEmail = document.getElementById("email").value;
+            let enteredPassword = document.getElementById("password").value;
 
-          <div class="icons">
-            <a href="https://www.facebook.com/share/1AmgnC7jnt/"><ion-icon name="logo-facebook"></ion-icon></a>
-            <a href="https://www.instagram.com/ritchennai?igsh=dTZ6NHA0cTQ5Ymxw"><ion-icon name="logo-instagram"></ion-icon></a>
-            <a href="https://www.linkedin.com/school/rit-chennai/"><ion-icon name="logo-linkedin"></ion-icon></a>
-            <a href="https://x.com/rit_chennai?t=Gn-kgGBl4oeXMxPyxJvqPA&s=09"><ion-icon name="logo-twitter"></ion-icon></a>
-        
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+            const isValid = validLogins.some(user =>
+                user.email === enteredEmail && user.password === enteredPassword
+            );
 
-  <!-- JavaScript Section -->
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-      event.preventDefault();
 
-      let enteredEmail = document.getElementById("email").value;
-      let enteredPassword = document.getElementById("password").value;
+            if (isValid) {
+                window.location.href = "startpage.html";
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        });
+    </script>
 
-      const correctEmail = "Kalai48866@gmail.com";
-      const correctPassword = "51470427";
-
-      if (enteredEmail === correctEmail && enteredPassword === correctPassword) {
-        window.location.href = "botfly.html";
-      } else {
-        document.getElementById("error-message").style.display = "block";
-      }
-    });
-  </script>
-
-  <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </body>
+
 </html>
 
 
-  <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </body>
-</html>
 
+</html>

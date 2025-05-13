@@ -19,7 +19,7 @@
       body.light-mode {
         --bg-color: #f5f5f5;
         --text-color: #000000;
- /* Force white text even in light mode */
+        /* Force white text even in light mode */
         --chat-bg: rgba(0, 0, 0, 0.05);
         --user-msg-bg: #ff6600;
         --bot-msg-bg: rgba(0, 0, 0, 0.1);
@@ -239,13 +239,13 @@
 
       .message {
         margin: 1.2rem 0; /* Increased vertical spacing */
-  padding: 0.8rem 1rem;
-  border-radius: 15px;
-  max-width: 75%;
-  word-wrap: break-word;
-  background-color: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(2px);
-  white-space: pre-wrap;
+        padding: 0.8rem 1rem;
+        border-radius: 15px;
+        max-width: 75%;
+        word-wrap: break-word;
+        background-color: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(2px);
+        white-space: inherit;
       }
 
       .user {
@@ -261,11 +261,10 @@
         color: #e0f0ff;
         margin-right: auto;
       }
-      
-      .bot + .bot {
-  margin-top: 1.5rem;
-}
 
+      .bot + .bot {
+        margin-top: 1.5rem;
+      }
 
       .quick-buttons {
         display: flex;
@@ -288,7 +287,6 @@
         font-size: 0.9rem;
         transition: 0.2s ease;
       }
-
 
       .quick-buttons button:hover {
         background-color: #0854a0;
@@ -376,7 +374,7 @@
       <div class="chat-container">
         <div class="messages" id="messages">
           <div class="message bot">
-            <span class="icon">👤</span>Hi! I'm your RIT Assistant. How can I
+            <span class="icon">👤 </span>Hi! I'm your RIT Assistant. How can I
             help you today?
           </div>
         </div>
@@ -420,7 +418,7 @@
 
         input.value = "";
         addMessage(text, "user");
-        // addToHistory(text);
+        addToHistory(text);
 
         showThinking();
 
@@ -498,7 +496,7 @@
             body: JSON.stringify({ message: input }),
           };
           console.log("fetchDetails", fetchDetails);
-          const res = await fetch("http://localhost:3000/chat", fetchDetails);
+          const res = await fetch("https://rit-chatbot-backend-1.onrender.com/chat", fetchDetails);
           const data = await res.json();
           return data.reply;
         } catch (err) {
@@ -520,7 +518,7 @@
 
       function logout() {
         if (confirm("Are you sure you want to logout?")) {
-          window.location.href = "Home page.html";
+          window.location.href = "homepage.html";
         }
       }
 
