@@ -75,7 +75,7 @@ function getCustomReply(msg) {
       - Mango Stick - ₹30
       - Chocobar - ₹30
 
-      🌐 For full menu vist, visit: https://trialtrialfood.ccbp.tech/`;
+      🌐 For full menu vist, visit: https://foodwebrit.ccbp.tech/`;
   }
   if (text.includes("library")) {
     return `📚 The library is open to the students and staff members from 8.00 a.m. to 5.00 p.m. on all working days and on Saturdays from 10.00 a.m. to 2.00 p.m
